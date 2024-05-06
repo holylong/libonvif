@@ -1,7 +1,7 @@
 #include "H264_2_RGB.h"
 //#include "base64.h"
 
-/*opencv库*/
+/*opencv??*/
 #include <opencv2/opencv.hpp>
 //#include"opencv2/face.hpp"
 //#include"opencv2/face/facerec.hpp"
@@ -23,7 +23,7 @@
 #pragma comment(lib, "ws2_32.lib")
 #endif
 
-extern "C"   /*这里必须要使用C方式导入*/
+extern "C"
 {
 	#include "libavcodec/avcodec.h"
 	#include "libavdevice/avdevice.h"
@@ -50,6 +50,7 @@ using namespace cv;
 // Forward function definitions:
 char eventLoopWatchVariable = 0;
 
+#if 0
 IplImage * MyResizeImage(IplImage* pSrc, double dScale)
 {
 	CvSize nSize;
@@ -60,7 +61,8 @@ IplImage * MyResizeImage(IplImage* pSrc, double dScale)
 	cvReleaseImage(&pSrc);
 	return pDes;
 }
-
+#else
+#endif
 
 string trimSpace(string s)
 {
@@ -84,24 +86,24 @@ string trimSpace(string s)
 
 void cb_discovery(char* DeviceXAddr)
 {
-	int stmno = 0;                                                              // 码流序号，0为主码流，1为辅码流
-	int profile_cnt = 0;                                                        // 设备配置文件个数
-	struct tagProfile *profiles = NULL;                                         // 设备配置文件列表
-	struct tagCapabilities capa;                                                // 设备能力信息
+	int stmno = 0;                                                              
+	int profile_cnt = 0;                                                        
+	struct tagProfile *profiles = NULL;                                         
+	struct tagCapabilities capa;                                                
 
-	char uri[MY_ONVIF_ADDRESS_SIZE] = { 0 };                                         // 不带认证信息的URI地址
-	char uri_auth[MY_ONVIF_TOKEN_SIZE + 50] = { 0 };                               // 带有认证信息的URI地址
+	char uri[MY_ONVIF_ADDRESS_SIZE] = { 0 };                                      
+	char uri_auth[MY_ONVIF_TOKEN_SIZE + 50] = { 0 };                              
 
-	MYONVIF_GetCapabilities(DeviceXAddr, &capa);                                  // 获取设备能力信息（获取媒体服务地址）
+	MYONVIF_GetCapabilities(DeviceXAddr, &capa);                                  
 
-	profile_cnt = MYONVIF_GetProfiles(capa.MediaXAddr, &profiles);                // 获取媒体配置信息（主/辅码流配置信息）
+	profile_cnt = MYONVIF_GetProfiles(capa.MediaXAddr, &profiles);                
 
 	if (profile_cnt > stmno) {
-		MYONVIF_GetStreamUri(capa.MediaXAddr, profiles[stmno].token, uri, sizeof(uri)); // 获取RTSP地址
+		MYONVIF_GetStreamUri(capa.MediaXAddr, profiles[stmno].token, uri, sizeof(uri)); 
 
-		my_make_uri_withauth(uri, USERNAME, PASSWORD, uri_auth, sizeof(uri_auth)); // 生成带认证信息的URI（有的IPC要求认证）
+		my_make_uri_withauth(uri, USERNAME, PASSWORD, uri_auth, sizeof(uri_auth));
 
-		//open_rtsp(uri_auth);                                                    // 读取主码流的音视频数据
+		//open_rtsp(uri_auth);                                                    
 		// Begin by setting up our usage environment:
 		TaskScheduler* scheduler = BasicTaskScheduler::createNew();
 		UsageEnvironment* env = BasicUsageEnvironment::createNew(*scheduler);

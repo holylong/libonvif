@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+
+
 #include "soapH.h"
 #include "wsaapi.h"
 
@@ -27,42 +29,42 @@ extern "C" {
 #define SOAP_DBGLOG     printf
 #define SOAP_DBGERR     printf
 
-#define USERNAME        "admin"                                                 // ÈÏÖ¤ÐÅÏ¢£¨ÓÃ»§Ãû¡¢ÃÜÂë£©
+#define USERNAME        "admin"                                                 // ï¿½ï¿½Ö¤ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£©
 #define PASSWORD        "admin"
 
 #define SOAP_TO         "urn:schemas-xmlsoap-org:ws:2005:04:discovery"
 #define SOAP_ACTION     "http://schemas.xmlsoap.org/ws/2005/04/discovery/Probe"
 
-#define SOAP_MCAST_ADDR "soap.udp://239.255.255.250:3702"                       // onvif¹æ¶¨µÄ×é²¥µØÖ·
+#define SOAP_MCAST_ADDR "soap.udp://239.255.255.250:3702"                       // onvifï¿½æ¶¨ï¿½ï¿½ï¿½é²¥ï¿½ï¿½Ö·
 
-#define SOAP_ITEM       ""                                                      // Ñ°ÕÒµÄÉè±¸·¶Î§
-#define SOAP_TYPES      "dn:NetworkVideoTransmitter"                            // Ñ°ÕÒµÄÉè±¸ÀàÐÍ
+#define SOAP_ITEM       ""                                                      // Ñ°ï¿½Òµï¿½ï¿½è±¸ï¿½ï¿½Î§
+#define SOAP_TYPES      "dn:NetworkVideoTransmitter"                            // Ñ°ï¿½Òµï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½
 
-#define SOAP_SOCK_TIMEOUT    (10)                                               // socket³¬Ê±Ê±¼ä£¨µ¥ÃëÃë£©
+#define SOAP_SOCK_TIMEOUT    (10)                                               // socketï¿½ï¿½Ê±Ê±ï¿½ä£¨ï¿½ï¿½ï¿½ï¿½ï¿½ë£©
 
-#define ONVIF_ADDRESS_SIZE   (128)                                              // URIµØÖ·³¤¶È
-#define ONVIF_TOKEN_SIZE     (65)                                               // token³¤¶È
+#define ONVIF_ADDRESS_SIZE   (128)                                              // URIï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½
+#define ONVIF_TOKEN_SIZE     (65)                                               // tokenï¿½ï¿½ï¿½ï¿½
 
-/* ÊÓÆµ±àÂëÆ÷ÅäÖÃÐÅÏ¢ */
+/* ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ */
 struct tagVideoEncoderConfiguration
 {
-    char token[ONVIF_TOKEN_SIZE];                                               // Î¨Ò»±êÊ¶¸ÃÊÓÆµ±àÂëÆ÷µÄÁîÅÆ×Ö·û´®
-    int Width;                                                                  // ·Ö±æÂÊ
+    char token[ONVIF_TOKEN_SIZE];                                               // Î¨Ò»ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
+    int Width;                                                                  // ï¿½Ö±ï¿½ï¿½ï¿½
     int Height;
 };
 
-/* Éè±¸ÅäÖÃÐÅÏ¢ */
+/* ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ */
 struct tagProfile {
-    char token[ONVIF_TOKEN_SIZE];                                               // Î¨Ò»±êÊ¶Éè±¸ÅäÖÃÎÄ¼þµÄÁîÅÆ×Ö·û´®
+    char token[ONVIF_TOKEN_SIZE];                                               // Î¨Ò»ï¿½ï¿½Ê¶ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
 
-    struct tagVideoEncoderConfiguration venc;                                   // ÊÓÆµ±àÂëÆ÷ÅäÖÃÐÅÏ¢
+    struct tagVideoEncoderConfiguration venc;                                   // ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 };
 
-/* Éè±¸ÄÜÁ¦ÐÅÏ¢ */
+/* ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ */
 struct tagCapabilities {
-    char MediaXAddr[ONVIF_ADDRESS_SIZE];                                        // Ã½Ìå·þÎñµØÖ·
-    char EventXAddr[ONVIF_ADDRESS_SIZE];                                        // ÊÂ¼þ·þÎñµØÖ·
-                                                                                // ÆäËû·þÎñÆ÷µØÖ·¾Í²»ÁÐ³öÁË
+    char MediaXAddr[ONVIF_ADDRESS_SIZE];                                        // Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
+    char EventXAddr[ONVIF_ADDRESS_SIZE];                                        // ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
+                                                                                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½Í²ï¿½ï¿½Ð³ï¿½ï¿½ï¿½
 };
 
 #define SOAP_CHECK_ERROR(result, soap, str) \

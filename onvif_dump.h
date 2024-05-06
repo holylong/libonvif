@@ -8,7 +8,7 @@
 #include <stdarg.h>
 #include "soapH.h"
 
-/* 用于打开ONVIF日志信息输出 */
+/* 鐢ㄤ簬鎵撳紑ONVIF鏃ュ織淇℃伅杈撳嚭 */
 #define ONVIF_DEBUG
 
 #ifdef __cplusplus

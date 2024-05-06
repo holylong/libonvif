@@ -140,7 +140,9 @@ struct X509_extension_st {
   ASN1_BOOLEAN critical;
   ASN1_OCTET_STRING *value;
 } /* X509_EXTENSION */;
-
+#ifdef _WIN32
+#undef X509_EXTENSIONS
+#endif
 typedef STACK_OF(X509_EXTENSION) X509_EXTENSIONS;
 
 DEFINE_STACK_OF(X509_EXTENSION)

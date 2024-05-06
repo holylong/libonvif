@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.0)
+
+project(live555 VERSION 2023.04.12 LANGUAGES C CXX)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/UsageEnvironment/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/liveMedia/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/BasicUsageEnvironment/include)
+
+add_subdirectory(BasicUsageEnvironment)
+add_subdirectory(groupsock)
+add_subdirectory(liveMedia)
+add_subdirectory(UsageEnvironment)
+# add_subdirectory(RtspClient)
+# add_subdirectory(RtspServer)
+# add_subdirectory(RtspPlayer)

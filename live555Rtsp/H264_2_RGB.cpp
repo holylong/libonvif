@@ -5,9 +5,9 @@ extern "C"
 {
 //	#include "sdl1/SDL.h"
 }
-
+#if 0
 extern IplImage * MyResizeImage(IplImage* pSrc, double dScale);
-
+#endif
 extern FILE* g_fp;
 
 AVCodec         *pCodec = NULL;
@@ -19,7 +19,7 @@ AVPacket		pkt;
 
 FILE * fw;
 
-//初始化ffmpeg相关组件
+
 int H264_Init(void)
 {
 	avcodec_register_all();
@@ -49,7 +49,6 @@ int H264_Init(void)
 
 int g_init = 0;
 
-//转码函数
 int H264_2_RGB(unsigned char *inputbuf, int frame_size, unsigned char *outputbuf, unsigned int*outsize, int *nWidth, int *nHeight)
 {
 	int             av_result = 0;
@@ -95,13 +94,14 @@ int H264_2_RGB(unsigned char *inputbuf, int frame_size, unsigned char *outputbuf
 		*outsize = pCodecCtx->width * 3 * pCodecCtx->height;
 		*nWidth = pCodecCtx->width;
 		*nHeight = pCodecCtx->height;
-		
+#if 0
 		IplImage *pRgbImg = cvCreateImage(cvSize(*nWidth, *nHeight), 8, 3);
 		memcpy(pRgbImg->imageData, buffer_rgb, *nWidth*3**nHeight);
 		IplImage* pDes = MyResizeImage(pRgbImg, 0.4);
 		cvShowImage("GB28181Show", pDes);
 		cvWaitKey(5);
 		cvReleaseImage(&pDes);
+#endif
 		sws_freeContext(img_convert_ctx);
 		av_free(buffer_rgb);
 		free(buffer_stream);

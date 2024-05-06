@@ -880,6 +880,7 @@ extern intmax_t __strtoull(const char*, char**, int);
 # endif
 # undef WITH_GNUTLS
 # define OPENSSL_NO_KRB5
+
 # include <openssl/bio.h>
 # include <openssl/err.h>
 # include <openssl/rand.h>

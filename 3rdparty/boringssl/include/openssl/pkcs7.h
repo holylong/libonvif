@@ -115,6 +115,9 @@ typedef struct {
 typedef void PKCS7_ENVELOPE;
 typedef void PKCS7_DIGEST;
 typedef void PKCS7_ENCRYPT;
+#ifdef _WIN32
+#undef PKCS7_SIGNER_INFO
+#endif
 typedef void PKCS7_SIGNER_INFO;
 
 typedef struct {

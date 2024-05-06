@@ -4,9 +4,8 @@
 
 #define __STDC_CONSTANT_MACROS  
 
-/*opencv库*/
 #include <opencv2/opencv.hpp>
-//#include <opencv2/core.hpp>
+#include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 //#include"opencv2/face.hpp"
 //#include"opencv2/face/facerec.hpp"
@@ -14,7 +13,7 @@
 //#include"opencv2/core/base.hpp"
 //#include"opencv2/xfeatures2d.hpp"
 
-extern "C"   /*这里必须要使用C方式导入*/
+extern "C"
 {
 	#include "libavcodec/avcodec.h"
 	#include "libavdevice/avdevice.h"
@@ -42,7 +41,7 @@ extern "C"   /*这里必须要使用C方式导入*/
 //#include "stdsoap2.h"
 //#include "soapStub.h"
 //#include "base64.h"
-//
+
 //#pragma comment(lib, "UsageEnvironment.lib")
 //#pragma comment(lib, "liveMedia.lib")
 //#pragma comment(lib, "groupsock.lib")
@@ -61,6 +60,7 @@ using namespace cv;
 //CascadeClassifier faceCascade;
 //CascadeClassifier eyesCascade;
 
+#if 0
 IplImage * MyResizeImage(IplImage* pSrc, double dScale)
 {
 	CvSize nSize;
@@ -71,7 +71,16 @@ IplImage * MyResizeImage(IplImage* pSrc, double dScale)
 	cvReleaseImage(&pSrc);
 	return pDes;
 } 
-//人脸检测
+#else
+cv::Mat myResizeMat(cv::Mat frame, double dScale)
+{
+	cv::Mat frame_resize;
+	cv::resize(frame, frame_resize, cv::Size(), dScale, dScale, cv::INTER_CUBIC);
+	return frame_resize;
+}
+#endif
+
+//face detection
 #if 0
 void DetectFace(Mat frame)
 {
@@ -99,6 +108,12 @@ void DetectFace(Mat frame)
 	waitKey(5);
 }
 #endif
+
+void custom_log_callback(void *ptr, int level, const char *fmt, va_list vl) {
+    if (level > AV_LOG_WARNING) {  // 只打印级别高于警告的信息
+        av_log_default_callback(ptr, level, fmt, vl);
+    }
+}
 
 
 void open_rtsp(const char *rtsp)
@@ -129,6 +144,9 @@ void open_rtsp(const char *rtsp)
 	for (i = 0; i < ifmt_ctx->nb_streams; i++) {                                // dump information
 		av_dump_format(ifmt_ctx, i, rtsp, 0);
 	}
+
+	// 设置自定义日志回调
+	av_log_set_callback(custom_log_callback);
 
 	for (i = 0; i < ifmt_ctx->nb_streams; i++) {                                // find video stream index
 		st = ifmt_ctx->streams[i];
@@ -161,12 +179,12 @@ void open_rtsp(const char *rtsp)
 
 	//if (!faceCascade.load(faceCascadeFileName))
 	{
-		cout << "脸模型文件加载失败" << endl;
+		cout << "load face detection model failed" << endl;
 		//return;
 	}
 	//if (!eyesCascade.load(eyesCasecadeFileName))
 	{
-		cout << "人眼模型文件加载失败" << endl;
+		cout << "load eye detection model failed" << endl;
 		//return;
 	}
 
@@ -175,7 +193,7 @@ void open_rtsp(const char *rtsp)
 		do {
 			ret = av_read_frame(ifmt_ctx, &pkt);                                // read frames
 #if 1
-			cout << pkt.size << endl;
+			// cout << pkt.size << endl;
 																				//decode stream
 			if (!nRestart)
 			{
@@ -207,20 +225,15 @@ void open_rtsp(const char *rtsp)
 			if (pkt.stream_index == videoindex)
 			{
 				//fprintf(stdout, "pkt.size=%d,pkt.pts=%lld, pkt.data=0x%x.", pkt.size, pkt.pts, (unsigned int)pkt.data);
-				fprintf(stdout, "pkt.size=%d,pkt.pts=%lld\n", pkt.size, pkt.pts);
+				// fprintf(stdout, "pkt.size=%d,pkt.pts=%lld\n", pkt.size, pkt.pts);
 				int av_result = avcodec_decode_video2(pVideoCodecCtx, pFrame, &got_picture, &pkt);
-
-				if (got_picture)
-				{
-					fprintf(stdout, "decode one video frame!\n");
-				}
 
 				if (av_result < 0)
 				{
 					fprintf(stderr, "decode failed: inputbuf = 0x%x , input_framesize = %d\n", pkt.data, pkt.size);
 					return;
 				}
-				printf("get pic %d--->%d--->%d\n", got_picture, pVideoCodecCtx->width, pVideoCodecCtx->height);
+				// printf("get pic %d--->%d--->%d\n", got_picture, pVideoCodecCtx->width, pVideoCodecCtx->height);
 #if 1
 				if (got_picture)
 				{
@@ -237,8 +250,8 @@ void open_rtsp(const char *rtsp)
 						return;
 					}
 					sws_scale(img_convert_ctx, pFrame->data, pFrame->linesize, 0, pVideoCodecCtx->height, pFrameRGB->data, pFrameRGB->linesize);
-					printf("iplimage-=-====-=-\n");
-#if 1
+				
+#if 0
 					IplImage *pRgbImg = cvCreateImage(cvSize(pVideoCodecCtx->width, pVideoCodecCtx->height), 8, 3);
 					memcpy(pRgbImg->imageData, buffer_rgb, pVideoCodecCtx->width * 3 * pVideoCodecCtx->height);
 					Mat Img = cvarrToMat(pRgbImg, true);
@@ -249,6 +262,11 @@ void open_rtsp(const char *rtsp)
 					//DetectFace(Img);
 					//cvWaitKey(10);
 					cvReleaseImage(&pDesImage);
+#else
+					cv::Mat frame(pVideoCodecCtx->height, pVideoCodecCtx->width, CV_8UC3, buffer_rgb);
+					Mat resizeImg = myResizeMat(frame, 0.3);
+					cv::imshow("rtsp", resizeImg);
+					cv::waitKey(3);
 #endif
 					sws_freeContext(img_convert_ctx);
 					av_free(buffer_rgb);
@@ -265,10 +283,10 @@ void open_rtsp(const char *rtsp)
 		}
 
 		if (pkt.stream_index == video_st_index) {                               // video frame
-			printf("Video Packet size = %d\n", pkt.size);
+			// printf("Video Packet size = %d\n", pkt.size);
 		}
 		else if (pkt.stream_index == audio_st_index) {                         // audio frame
-			printf("Audio Packet size = %d\n", pkt.size);
+			// printf("Audio Packet size = %d\n", pkt.size);
 		}
 		else {
 			printf("Unknow Packet size = %d\n", pkt.size);

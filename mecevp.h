@@ -50,7 +50,6 @@ A commercial use license is available from Genivia, Inc., contact@genivia.com
 #define MECEVP_H
 
 #include "stdsoap2.h"
-
 #include <openssl/evp.h>
 #include <openssl/ssl.h>
 #include <openssl/rand.h>
