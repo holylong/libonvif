@@ -4,13 +4,26 @@ project(libonvif VERSION 0.1)
 
 if(WIN32)
     add_definitions(-DUSE_WIN32_CRYPTO -D_CRT_SECURE_NO_WARNINGS -DWITH_OPENSSL)
+elseif(UNIX)
+    add_definitions(-DWITH_OPENSSL)
 endif(WIN32)
+
+set(BUILD_SHARED_LIBS ON)
 
 # add_subdirectory(3rdparty/boringssl)
 # include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/boringssl/include)
 
 add_subdirectory(3rdparty/openssl-cmake)
 add_subdirectory(3rdparty/live555)
+
+# add_definitions(-DWITH_C_LOCALE)
+if(UNIX)
+    add_definitions(-DXLOCALE_NOT_USED)
+    add_definitions(-DUNIX)
+endif()
+
+# 在你的CMakeLists.txt的适当位置添加以下命令
+add_compile_options(-Wint-to-pointer-cast)
 
 include_directories(${OPENSSL_INCLUDE_DIR})
 

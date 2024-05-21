@@ -291,9 +291,15 @@ int readSocket(UsageEnvironment& env,
 	       int socket, unsigned char* buffer, unsigned bufferSize,
 	       struct sockaddr_in& fromAddress) {
   SOCKLEN_T addressSize = sizeof fromAddress;
+  #ifdef _WIN32
   int bytesRead = recvfrom(socket, (char*)buffer, bufferSize, 0,
 			   (struct sockaddr*)&fromAddress,
 			   &addressSize);
+         #else
+int bytesRead = recvfrom(socket, (char*)buffer, bufferSize, 0,
+			   (struct sockaddr*)&fromAddress,
+			   (socklen_t*)&addressSize);
+         #endif
   if (bytesRead < 0) {
     //##### HACK to work around bugs in Linux and Windows:
     int err = env.getErrno();
@@ -378,8 +384,13 @@ static unsigned getBufferSize(UsageEnvironment& env, int bufOptName,
 			      int socket) {
   unsigned curSize;
   SOCKLEN_T sizeSize = sizeof curSize;
+  #ifdef _WIN32
   if (getsockopt(socket, SOL_SOCKET, bufOptName,
 		 (char*)&curSize, &sizeSize) < 0) {
+  #else
+  if (getsockopt(socket, SOL_SOCKET, bufOptName,
+		 (char*)&curSize, (socklen_t*)&sizeSize) < 0) {
+  #endif
     socketErr(env, "getBufferSize() error: ");
     return 0;
   }
@@ -566,7 +577,11 @@ Boolean socketLeaveGroupSSM(UsageEnvironment& /*env*/, int socket,
 static Boolean getSourcePort0(int socket, portNumBits& resultPortNum/*host order*/) {
   sockaddr_in test; test.sin_port = 0;
   SOCKLEN_T len = sizeof test;
+  #ifdef _WIN32
   if (getsockname(socket, (struct sockaddr*)&test, &len) < 0) return False;
+  #else
+  if (getsockname(socket, (struct sockaddr*)&test, (socklen_t*)&len) < 0) return False;
+  #endif
 
   resultPortNum = ntohs(test.sin_port);
   return True;

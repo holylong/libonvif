@@ -3597,10 +3597,6 @@ soap_ssl_crl(struct soap *soap, const char *crlfile)
 #endif
 #endif
 
-#if 0
-
-#endif
-
 /******************************************************************************/
 
 #if defined(WITH_OPENSSL) || defined(WITH_GNUTLS)
