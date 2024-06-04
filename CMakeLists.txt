@@ -6,6 +6,8 @@ if(WIN32)
     add_definitions(-DUSE_WIN32_CRYPTO -D_CRT_SECURE_NO_WARNINGS -DWITH_OPENSSL)
 elseif(UNIX)
     add_definitions(-DWITH_OPENSSL)
+	# 在你的CMakeLists.txt的适当位置添加以下命令
+add_compile_options(-Wint-to-pointer-cast)
 endif(WIN32)
 
 set(BUILD_SHARED_LIBS ON)
@@ -21,9 +23,6 @@ if(UNIX)
     add_definitions(-DXLOCALE_NOT_USED)
     add_definitions(-DUNIX)
 endif()
-
-# 在你的CMakeLists.txt的适当位置添加以下命令
-add_compile_options(-Wint-to-pointer-cast)
 
 include_directories(${OPENSSL_INCLUDE_DIR})
 
