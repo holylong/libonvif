@@ -39,3 +39,9 @@ endif()
 
 add_subdirectory(test)
 add_subdirectory(live555Rtsp)
+
+find_package(Qt5 COMPONENTS Core Widgets)
+find_package(Qt6 COMPONENTS Core Widgets)
+if(Qt5_FOUND OR Qt6_FOUND)
+add_subdirectory(${CMAKE_SOURCE_DIR}/qcamsuit)
+endif()

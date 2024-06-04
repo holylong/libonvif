@@ -1,0 +1,179 @@
+QWidget{
+    border-radius:5px;
+    background-color:rgb(58,57,58);
+    color:rgb(225,224,225);
+
+    border-left: 2px solid gray;
+    border-right: 2px solid gray;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+}
+
+QToolBar{
+    border-radius : 10px;
+}
+
+QStatusBar{
+    border-left: 2px solid gray;
+    border-right: 2px solid gray;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+    border-radius : 10px;
+}
+
+QStackedWidget{
+    border-left: 2px solid gray;
+    border-right: 2px solid gray;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+    border-radius : 10px;
+}
+
+::corner {
+    background-color:rgb(58,57,58);
+    border: none;
+}
+
+QScrollBar:vertical {
+    background-color: rgb(58,57,58);
+    width: 14px;
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: rgb(76,76,76);
+    min-height: 20px;
+    margin: 2px;
+    border-radius: 5px;
+    border-width: 1px;
+    border: 1px solid rgb(76,76,76);
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    border: none;
+    background: none;
+    color: none;
+}
+
+QScrollBar:horizontal {
+    background-color: palette(window);
+    height: 14px;
+    margin: 0px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: rgb(76,76,76);
+    min-width: 20px;
+    margin: 2px;
+    border-radius: 5px;
+    border-width: 1px;
+    border: 1px solid rgb(76,76,76);
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    border: none;
+    background: none;
+    width: 0px;
+}
+
+QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal, QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    border: none;
+    background: none;
+    color: none;
+}
+
+QListView::item {
+    height: 45px;
+    color: rgb(255, 255, 255);
+}
+
+QPushButton:hover{
+    background-color: gray;
+}
+
+QPushButton:pressed{
+    background-color: rgb(4, 140, 255);
+}
+
+QToolButton{
+    border-radius : 10px;
+    margin-left: 11px;
+    margin-right: 11px;
+    color: white;
+}
+
+QToolButton:hover{
+    background-color: gray;
+}
+
+#_targetAction{
+    border-image: url(:/res/wooqt_logo.png);
+}
+
+#_targetAction:pressed{
+    border-image: url(:/res/setting.svg);
+}
+
+QToolButton:pressed{
+    border-radius : 10px;
+    background-color: gray;
+
+    margin-left: 11px;
+    margin-right: 11px;
+
+    border-color: red;
+}
+
+QGroupBox {
+     border-color: rgb(156, 156, 156);
+     border-width: 1px;
+     border-style: solid;
+     margin-top: 0.5ex;
+ }
+ QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left;
+     left: 10px;
+     margin-left: 2px;
+     padding: 0  0px;
+ }
+
+QLineEdit{
+    background-color:rgb(255,255,255);
+    color: rgb(0,0,0);
+}
+
+QPushButton#btnline{
+    background-color: gray;
+}
+
+QLabel{
+    border-left: 2px solid gray;
+    border-right: 2px solid gray;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+    border-radius : 10px;
+}
+
+QListView {
+    border-left: 2px solid gray;
+    border-right: 2px solid gray;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+    border-radius : 10px;
+}
+
+QWidget#_mainWidget{
+    /*border-image:url(:/res/city_1.jpg);*/
+    border-radius:5px;
+}
+
+QWidget#topToolBar{
+    border-radius:5px;
+}

@@ -485,7 +485,7 @@ void cb_discovery(char* DeviceXAddr)
 		char chName[6] = "admin";
 		my_make_uri_withauth(uri, chName, chName, uri_auth, sizeof(uri_auth)); // 生成带认证信息的URI（有的IPC要求认证）
 
-		open_rtsp(uri_auth);                                                    // 读取主码流的音视频数据
+		// open_rtsp(uri_auth);                                                    // 读取主码流的音视频数据
 	}
 
 	if (NULL != profiles) {

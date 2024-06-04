@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/camera.svg</file>
+        <file>res/camera_blue.svg</file>
+        <file>res/camera_zi.svg</file>
+        <file>res/settings_zi.svg</file>
+        <file>res/basictheme.qss</file>
+        <file>res/split_zi.svg</file>
+    </qresource>
+</RCC>
