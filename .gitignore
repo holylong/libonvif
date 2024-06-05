@@ -2,3 +2,5 @@ build_ninja
 .vscode 
 build 
 build-qcamsuit-Desktop_Qt_5_15_2_GCC_64bit-Debug/
+CMakeLists.txt.user
+CMakeLists.txt.user

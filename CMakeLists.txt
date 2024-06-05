@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 project(libonvif VERSION 0.1)
 
+option(BUILD_ONVIF_DEMOS "build demos" ON)
+set(OpenCV_DIR /home/skyer/svul/work/install/share/OpenCV)
+
 if(WIN32)
     add_definitions(-DUSE_WIN32_CRYPTO -D_CRT_SECURE_NO_WARNINGS -DWITH_OPENSSL)
 elseif(UNIX)
@@ -26,7 +29,7 @@ endif()
 
 include_directories(${OPENSSL_INCLUDE_DIR})
 
-file(GLOB libonvif_SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.c ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+file(GLOB libonvif_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
 if(WIN32)
     add_library(libonvif SHARED ${libonvif_SRC})
@@ -36,11 +39,14 @@ else()
     target_link_libraries(onvif ssl crypto)
 endif()
 
-add_subdirectory(test)
-add_subdirectory(live555Rtsp)
+if(BUILD_ONVIF_DEMOS)
+    # add_subdirectory(3rdparty/qtlottie)
+    add_subdirectory(demos/test)
+    add_subdirectory(demos/live555Rtsp)
 
-find_package(Qt5 COMPONENTS Core Widgets)
-find_package(Qt6 COMPONENTS Core Widgets)
-if(Qt5_FOUND OR Qt6_FOUND)
-add_subdirectory(${CMAKE_SOURCE_DIR}/qcamsuit)
+    find_package(Qt5 COMPONENTS Core Widgets)
+    find_package(Qt6 COMPONENTS Core Widgets)
+    if(Qt5_FOUND OR Qt6_FOUND)
+        add_subdirectory(${CMAKE_SOURCE_DIR}/demos/qcamsuit)
+    endif()
 endif()
