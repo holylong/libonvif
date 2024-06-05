@@ -3,16 +3,12 @@
 
 #include "onvif_interface.h"
 
-#include <functional>
 #include <string>
 #include <vector>
-
-#include <iostream>
 #include <vector>
 #include <string>
 #include "onvif_interface.h"
 #include "onvif_comm.h"
-#include "onvif_dump.h"
 
 class ONVIFDevice {
 public:
