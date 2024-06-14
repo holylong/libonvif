@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools OpenGL OpenGLExtensions Concurrent)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools OpenGL OpenGLExtensions Concurrent)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools OpenGL OpenGLExtensions Concurrent Multimedia MultimediaWidgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools OpenGL OpenGLExtensions Concurrent Multimedia MultimediaWidgets)
 
 set(TS_FILES qcamsuit_zh_CN.ts)
 
@@ -30,6 +30,8 @@ set(PROJECT_SOURCES
         settingswidget.h settingswidget.cpp
         containerprocessor.h containerprocessor.cpp
         stylemanager.h
+        imagecvt.h imagecvt.cpp
+        stringutil.h
         app.qrc
         ${TS_FILES}
 )
@@ -63,11 +65,14 @@ endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src/)
 
-target_link_libraries(qcamsuit PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::OpenGL Qt${QT_VERSION_MAJOR}::OpenGLExtensions Qt${QT_VERSION_MAJOR}::Concurrent)
+target_link_libraries(qcamsuit PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::OpenGL
+                                       Qt${QT_VERSION_MAJOR}::OpenGLExtensions Qt${QT_VERSION_MAJOR}::Concurrent
+                                       Qt${QT_VERSION_MAJOR}::Multimedia
+                                       Qt${QT_VERSION_MAJOR}::MultimediaWidgets)
 if(WIN32)
-    target_link_libraries(qcamsuit PRIVATE libonvif ssl crypto)
+    target_link_libraries(qcamsuit PRIVATE libonvif ssl crypto avcodec avformat avutil swscale avdevice swresample)
 else()
-    target_link_libraries(qcamsuit PRIVATE onvif ssl crypto)
+    target_link_libraries(qcamsuit PRIVATE onvif ssl crypto avcodec avformat avutil swscale avdevice swresample)
 endif()
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

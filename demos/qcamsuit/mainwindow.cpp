@@ -6,6 +6,7 @@
 #include "multicontentwidget.h"
 #include "analysiscontentwidget.h"
 #include "settingswidget.h"
+#include "stringutil.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QStackedWidget>
@@ -18,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("CamSuit");
     setWindowIcon(QIcon(":/res/camera_zi.svg"));
-
+    _urls.clear();
     initMemo();
     initLayout();
 }
@@ -28,8 +29,10 @@ void MainWindow::initMemo()
     _onvifService.reset(new OnvifService());
     _onvifService->Start();
 
-    QObject::connect(_onvifService.get(), &OnvifService::onNewCamSignal, this, [=](QString a, QString b){
-        qDebug() << a << " " << b;
+    QObject::connect(_onvifService.get(), &OnvifService::onNewCamSignalList, this, [=](const QStringList& urls){
+        _urls = StringUtil::RepeatStringDel(urls);
+        StringUtil::Display(_urls);
+        _multiContentWidget->setUrls(_urls.toVector());
     });
 }
 
@@ -37,9 +40,12 @@ void MainWindow::initLayout()
 {
     _mainLayout = new QHBoxLayout(ui->centralwidget);
     _stackedWidget = new QStackedWidget(ui->centralwidget);
-    _multiContentWidget = new MultiContentWidget(_stackedWidget);
     _analysisContentWidget = new AnalysisContentWidget(_stackedWidget);
+    _stackedWidget->addWidget(_analysisContentWidget);
+    _multiContentWidget = new MultiContentWidget(_stackedWidget);
+    _stackedWidget->addWidget(_multiContentWidget);
     _settingsWidget = new SettingsWidget(_stackedWidget);
+    _stackedWidget->addWidget(_settingsWidget);
 
     _iconGroup = new IconButtonGroup();
     IconButton *iconCamera = new IconButton("Camera", ":/res/camera_zi.svg");

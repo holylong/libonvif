@@ -10,6 +10,7 @@
 ImageRenderer::ImageRenderer(QWidget *parent)
     : QOpenGLWidget{parent}
 {
+    qDebug() << __FUNCTION__;
     setContextMenuPolicy(Qt::CustomContextMenu);
     QObject::connect(this, &QWidget::customContextMenuRequested, this, &ImageRenderer::createRandomMenu);
 }
@@ -37,12 +38,14 @@ void ImageRenderer::setImage(const QImage& image)
     if (image.isNull()) return;
 
     if (_texture != nullptr) {
-        _texture->destroy();
-        delete _texture;
-        _texture = nullptr;
+        // _texture->destroy();
+        // delete _texture
+        // _texture = nullptr;
+        _texture->bind();
+        _texture->setData(image.mirrored().convertToFormat(QImage::Format_RGBA8888));
+    }else{
+        _texture = new QOpenGLTexture(image.convertToFormat(QImage::Format_RGBA8888));
     }
-
-    _texture = new QOpenGLTexture(image.convertToFormat(QImage::Format_RGBA8888));
     _imageSize = image.size();
     update(); // 请求重绘
 }
@@ -59,6 +62,8 @@ void ImageRenderer::paintGL()
 
     if(_texture != nullptr && !_imageSize.isEmpty()){
         _texture->bind();
+
+        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, rgbFrame.cols, rgbFrame.rows, 0, GL_RGB, GL_UNSIGNED_BYTE, rgbFrame.data);
 
         glBegin(GL_QUADS);
         glTexCoord2d(0, 1); glVertex2d(0, 0);
@@ -77,12 +82,13 @@ void ImageRenderer::resizeGL(int w, int h)
 
 void ImageRenderer::onImageSet(const QImage& image)
 {
-
+    qDebug() << __FUNCTION__;
+    setImage(image);
 }
 
 void ImageRenderer::handleMenuItemTriggered()
 {
-    // qDebug() << "Selected:" << action->text();
+    qDebug() << "Selected:";
 }
 
 void ImageRenderer::createRandomMenu(const QPoint& pos)

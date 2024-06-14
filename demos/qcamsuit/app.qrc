@@ -6,5 +6,7 @@
         <file>res/settings_zi.svg</file>
         <file>res/basictheme.qss</file>
         <file>res/split_zi.svg</file>
+        <file>res/shaders/fragment.glsl</file>
+        <file>res/shaders/vertex.glsl</file>
     </qresource>
 </RCC>

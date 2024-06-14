@@ -1,4 +1,5 @@
 #include "onvifservice.h"
+#include "containerprocessor.h"
 #include <QtConcurrent>
 
 ONVIFDevice* ONVIFDevice::instance = nullptr;
@@ -25,9 +26,11 @@ void OnvifService::checkSystemMessages()
     QtConcurrent::run([this]() {
         _onvifClt->detectDevices();
         std::vector<std::string> arrUrls = _onvifClt->getURIs();
-        if (arrUrls.size() > 0) {
+        QStringList urls = ContainerProcessor::vectorToStringList(arrUrls);
+        if (urls.size() > 0) {
             // 假设我们这里只是简单地发送两个空字符串作为示例
-            emit onNewCamSignal("New Message", "Details");
+            // emit onNewCamSignal("New Message", "Details");
+            emit onNewCamSignalList(urls);
         }else{
             qDebug() << "==>>> No Camera";
         }

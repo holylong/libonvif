@@ -17,6 +17,7 @@ public:
 
 signals:
     void onNewCamSignal(QString, QString);
+    void onNewCamSignalList(const QStringList&);
 
 private slots:
     void checkSystemMessages();

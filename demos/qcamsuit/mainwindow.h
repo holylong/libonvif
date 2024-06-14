@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSet>
 #include "onvifservice.h"
 
 class QHBoxLayout;
@@ -41,5 +42,8 @@ private:
     MultiContentWidget  *_multiContentWidget;
     AnalysisContentWidget       *_analysisContentWidget;
     SettingsWidget             *_settingsWidget;
+
+    // QSet<QString>  _uniqueList;
+    QStringList       _urls;
 };
 #endif // MAINWINDOW_H

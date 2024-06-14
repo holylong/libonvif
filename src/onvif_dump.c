@@ -236,12 +236,13 @@ static void log_level_struct_wsa__EndpointReferenceType(unsigned int level, stru
 
 void dump__wsdd__ProbeMatches(struct __wsdd__ProbeMatches *rep)
 {
+#if 0
     int i;
     struct wsdd__ProbeMatchType* probeMatch;
 
     assert(NULL != rep);
     log_func_in;
-    log_level_val(0, "wsdd__ProbeMatches: ",                log_pos,    rep->wsdd__ProbeMatches);
+    log_level_val(3, "wsdd__ProbeMatches: ",                log_pos,    rep->wsdd__ProbeMatches);
     if (NULL != rep->wsdd__ProbeMatches) {
         log_level_val(1, "__sizeProbeMatch: ",              log_int,   &rep->wsdd__ProbeMatches->__sizeProbeMatch);
         log_level_val(1, "ProbeMatch: ",                    log_pos,   &rep->wsdd__ProbeMatches->ProbeMatch);
@@ -261,6 +262,7 @@ void dump__wsdd__ProbeMatches(struct __wsdd__ProbeMatches *rep)
         }
     }
     log_func_out;
+#endif
 }
 
 static void log_level_struct_tt__SystemCapabilities(unsigned int level, struct tt__SystemCapabilities *a)
@@ -312,6 +314,7 @@ static void log_level_struct_tt__MediaCapabilities(unsigned int level, struct tt
 
 void dump_tds__GetCapabilitiesResponse(struct _tds__GetCapabilitiesResponse *rep)
 {
+#if 0
     assert(NULL != rep);
     log_func_in;
     log_level_val(0, "Capabilities: ",      log_pos, rep->Capabilities);
@@ -385,6 +388,7 @@ void dump_tds__GetCapabilitiesResponse(struct _tds__GetCapabilitiesResponse *rep
         }
     }
     log_func_out;
+#endif
 }
 
 void dump_tds__GetDeviceInformationResponse(struct _tds__GetDeviceInformationResponse *rep)
@@ -401,6 +405,7 @@ void dump_tds__GetDeviceInformationResponse(struct _tds__GetDeviceInformationRes
 
 void dump_trt__GetProfilesResponse(struct _trt__GetProfilesResponse *rep)
 {
+#if 0
     int i;
 
     assert(NULL != rep);
@@ -472,6 +477,7 @@ void dump_trt__GetProfilesResponse(struct _trt__GetProfilesResponse *rep)
 
     }
     log_func_out;
+#endif
 }
 
 void dump_trt__GetStreamUriResponse(struct _trt__GetStreamUriResponse *rep)
