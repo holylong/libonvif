@@ -11,7 +11,7 @@ include_directories(${CMAKE_BINARY_DIR}/3rdparty/openssl-cmake/include)
 if(WIN32)
 include_directories("${FFMPEG_DIR}/include")
 link_directories("${FFMPEG_DIR}/lib")
-# set(OpenCV_DIR "D:/commonlib/opencv/opencv455/opencv/build")
+# set(OpenCV_DIR "D:/commonlib/opencv/opencv4100/opencv/build")
 if(MSVC)
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
@@ -36,28 +36,28 @@ if (WIN32)
     if(CMAKE_BUILD_TYPE MATCHES "Release")
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${_OpenCV_LIB_PATH}/opencv_world455.dll"
+                "${_OpenCV_LIB_PATH}/opencv_world4100.dll"
                 $<TARGET_FILE_DIR:${PROJECT_NAME}>)
             add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${_OpenCV_LIB_PATH}/opencv_videoio_ffmpeg455_64.dll"
+                "${_OpenCV_LIB_PATH}/opencv_videoio_ffmpeg4100_64.dll"
                 $<TARGET_FILE_DIR:${PROJECT_NAME}>)
             add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${_OpenCV_LIB_PATH}/opencv_videoio_msmf455_64.dll"
+                "${_OpenCV_LIB_PATH}/opencv_videoio_msmf4100_64.dll"
                 $<TARGET_FILE_DIR:${PROJECT_NAME}>)
     else()
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${_OpenCV_LIB_PATH}/opencv_world455d.dll"
+            "${_OpenCV_LIB_PATH}/opencv_world4100d.dll"
             $<TARGET_FILE_DIR:${PROJECT_NAME}>)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${_OpenCV_LIB_PATH}/opencv_videoio_ffmpeg455_64.dll"
+            "${_OpenCV_LIB_PATH}/opencv_videoio_ffmpeg4100_64.dll"
             $<TARGET_FILE_DIR:${PROJECT_NAME}>)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${_OpenCV_LIB_PATH}/opencv_videoio_msmf455_64d.dll"
+            "${_OpenCV_LIB_PATH}/opencv_videoio_msmf4100_64d.dll"
             $<TARGET_FILE_DIR:${PROJECT_NAME}>)
     endif()
 endif ()

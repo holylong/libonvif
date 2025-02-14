@@ -7,6 +7,10 @@
 #include <QDebug>
 #include <QAction>
 
+#ifdef _WIN32
+#pragma comment(lib, "opengl32.lib")
+#endif
+
 ImageRenderer::ImageRenderer(QWidget *parent)
     : QOpenGLWidget{parent}
 {

@@ -2,8 +2,8 @@
 #include <QImage>
 extern "C"
 {
-    #include "libavcodec/avcodec.h"
-    #include "libavformat/avformat.h"
+    #include <libavcodec/avcodec.h>
+    #include <libavformat/avformat.h>
     #include "libavutil/avutil.h"
     #include "libswscale/swscale.h"
 }
@@ -19,6 +19,7 @@ bool RtspController::Close(void* ctx){
         avformat_close_input(&ifmt_ctx);
         ifmt_ctx = NULL;
     }
+    return true;
 }
 
 void RtspController::custom_log_callback(void *ptr, int level, const char *fmt, va_list vl) {

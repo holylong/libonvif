@@ -13,13 +13,14 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 
 
 if(WIN32)
+    message(STATUS "WIN32")
     include_directories("${FFMPEG_DIR}/include")
     link_directories("${FFMPEG_DIR}/lib")
     # set(OpenCV_DIR "D:/commonlib/opencv/opencv455/opencv/build")
-    if(MSVC)
+    if(WIN32)
         add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
         add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-    endif(MSVC)
+    endif(WIN32)
 endif(WIN32)
 
 link_directories(${CMAKE_BINARY_DIR}/lib)

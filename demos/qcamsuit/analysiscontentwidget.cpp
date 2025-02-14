@@ -29,7 +29,8 @@ AnalysisContentWidget::AnalysisContentWidget(QWidget *parent)
 
     speedComboBox->addItems({"0.5x", "1x", "1.5x", "2x"});
     // mediaPlayer->setSource(QUrl::fromLocalFile("path_to_your_video_file"));  // 请替换为实际的视频文件路径
-    mediaPlayer->setMedia(QUrl::fromLocalFile("/Users/me/Music/coolsong.mp3"));
+    // mediaPlayer->setMedia(QUrl::fromLocalFile("/Users/me/Music/coolsong.mp3"));
+    mediaPlayer->setSource(QUrl::fromLocalFile("/Users/me/Music/coolsong.mp3"));
 }
 
 AnalysisContentWidget::~AnalysisContentWidget()

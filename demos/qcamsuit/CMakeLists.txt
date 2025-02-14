@@ -9,10 +9,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools OpenGL OpenGLExtensions Concurrent Multimedia MultimediaWidgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools OpenGL OpenGLExtensions Concurrent Multimedia MultimediaWidgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools OpenGL OpenGLWidgets Concurrent Multimedia MultimediaWidgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools OpenGL OpenGLWidgets Concurrent Multimedia MultimediaWidgets)
 
 set(TS_FILES qcamsuit_zh_CN.ts)
+
+include_directories(${FFMPEG_DIR}/include)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -46,7 +48,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+    qt6_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else()
     if(ANDROID)
         add_library(qcamsuit SHARED
@@ -64,12 +66,15 @@ else()
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src/)
+link_directories(${FFMPEG_DIR}/lib)
 
 target_link_libraries(qcamsuit PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::OpenGL
-                                       Qt${QT_VERSION_MAJOR}::OpenGLExtensions Qt${QT_VERSION_MAJOR}::Concurrent
+                                        Qt${QT_VERSION_MAJOR}::OpenGLWidgets
+                                       Qt${QT_VERSION_MAJOR}::Concurrent
                                        Qt${QT_VERSION_MAJOR}::Multimedia
                                        Qt${QT_VERSION_MAJOR}::MultimediaWidgets)
 if(WIN32)
+    target_link_directories(qcamsuit PRIVATE ${FFMPEG_DIR}/lib)
     target_link_libraries(qcamsuit PRIVATE libonvif ssl crypto avcodec avformat avutil swscale avdevice swresample)
 else()
     target_link_libraries(qcamsuit PRIVATE onvif ssl crypto avcodec avformat avutil swscale avdevice swresample)

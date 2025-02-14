@@ -10,16 +10,11 @@ public:
         for(QString s : ss)
             qDebug() << s;
     }
-
-    static QStringList RepeatStringDel(const QStringList& list){
-        // 将QStringList转换为QSet自动去重，然后再转换回QStringList
-        QSet<QString> set(list.begin(), list.end());
-        return QStringList(set.begin(), set.end());
-    }
-
-    static QVector<QString> RepeatStringDel(const QVector<QString>& list){
-        QSet<QString> uniqueSet(list.begin(), list.end());
-        return QVector<QString>(uniqueSet.begin(), uniqueSet.end());
+    
+    template<typename Container>
+    static Container RepeatStringDel(const Container& list) {
+        QSet<typename Container::value_type> uniqueSet(list.begin(), list.end());
+        return Container(uniqueSet.begin(), uniqueSet.end());
     }
 };
 
